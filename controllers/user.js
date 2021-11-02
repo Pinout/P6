@@ -6,9 +6,9 @@ dotenv.config();
 
 const User = require('../models/User');
 
-// Inscription du user
+// Inscription d'un user
 exports.signup = (req, res, next) => {
-    // Valider le mot de passe
+    // Validation du mot de passe
     var regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
     if (regex.test(req.body.password)) {
         // Crypte le mot de passe en faisant 10 tours
@@ -29,7 +29,7 @@ exports.signup = (req, res, next) => {
     }
 };
 
-// Connexion du user
+// Connexion d'un user
 exports.login = (req, res, next) => {
   User.findOne({
       email: req.body.email
@@ -40,7 +40,7 @@ exports.login = (req, res, next) => {
           error: 'Utilisateur non trouvé !'
         });
       }
-      bcrypt.compare(req.body.password, user.password)
+      bcrypt.compare(req.body.password, user.password) // Compare le password envoyé avec le bon (bcrypt)
         .then(valid => {
           if (!valid) {
             return res.status(401).json({

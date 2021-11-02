@@ -54,7 +54,7 @@ exports.deleteSauce = (req, res, next) => {
         .then(sauce => {
             // Récupère le nom du fichier dans l'URL de l'image
             const filename = sauce.imageUrl.split('/images/')[1];
-            // Supprime l'image correspondante dans "images" et la sauce
+            // Supprime l'image correspondante dans "images" ainsi que la sauce
             fs.unlink(`images/${filename}`, () => {
                 Sauce.deleteOne({ _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Sauce supprimée !' }))
@@ -66,7 +66,7 @@ exports.deleteSauce = (req, res, next) => {
 
 // Afficher une sauce
 exports.getOneSauce = (req, res, next) => {
-    // Compare l'id dans la BD avec l'id de la requête
+    // Cherche la sauce en comparant l'id qui est dans la BDD avec l'id de la requête
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
@@ -75,23 +75,23 @@ exports.getOneSauce = (req, res, next) => {
 // Afficher toutes les sauces
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
-        // Renvoie un tableau contenant toutes les sauces de la BD
+        // Renvoie un tableau contenant toutes les sauces de la BDD
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error }));
 };
 
-// J'aime, je n'aime pas et annuler j'aime ou je n'aime pas
+// Like/Dislike ou annuler Like/Dislike
 exports.likeDislikeSauce = (req, res, next) => {
     const userId = req.body.userId;
     const like = req.body.like;
 
     Sauce.findOne({ _id: req.params.id })
         .then( sauce => {
-            // MongoDB: $inc = incrémenter, $push = insérer, $pull = enlever
+            // MongoDB: $inc = incrémenter / $push = insérer / $pull = enlever
             switch (like) {
                 // L'utilisateur veut liker la sauce
                 case 1 :
-                    // Si l'utilisateur n'a pas encore liké cette sauce
+                    // Si l'utilisateur n'a pas encore like cette sauce
                     if (!sauce.usersLiked.includes(userId)) {
                         Sauce.updateOne({ _id: req.params.id }, { $inc: {likes: +1}, $push: {usersLiked: userId}, _id: req.params.id })
                         .then(() => {
@@ -121,7 +121,7 @@ exports.likeDislikeSauce = (req, res, next) => {
                     break;
                 // L'utilisateur veut disliker la sauce
                 case -1 :
-                    // Si l'utilisateur n'a pas encore disliké cette sauce
+                    // Si l'utilisateur n'a pas encore dislike cette sauce
                     if (!sauce.usersDisliked.includes(userId)) {
                         Sauce.updateOne({ _id: req.params.id }, { $inc: {dislikes: +1}, $push: {usersDisliked: userId}, _id: req.params.id })
                         .then(() => {
