@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken'); // Package pour la sécuriser les échanges
+const jwt = require('jsonwebtoken'); // Package pour sécuriser les échanges
 
 module.exports = (req, res, next) => {
     try {

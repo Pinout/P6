@@ -1,17 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+
 const saucesRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
+
 const path = require('path');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require("helmet");
 
 const app = express();
-
-require('dotenv').config();
-const user = process.env.DB_USER;
-const pass = process.env.DB_PASS;
 
 app.set('view engine', 'html');
 
@@ -46,22 +44,5 @@ app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
-
-app.use(function(req, res, next){
-  res.status(404);
-
-  // Respond with html page
-  if (req.accepts('html')) {
-    res.render('404', { url: req.url });
-    return;
-  }
-  // Respond with json
-  if (req.accepts('json')) {
-    res.send({ error: 'Not found' });
-    return;
-  }
-  // Default to plain-text. send()
-  res.type('txt').send('Not found');
-});
 
 module.exports = app;

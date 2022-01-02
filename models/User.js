@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator'); // Package pour la validation des emails
+const uniqueValidator = require('mongoose-unique-validator'); // Pré-validation des requêtes
 
 // Modèle pour un User
 const userSchema = mongoose.Schema({
