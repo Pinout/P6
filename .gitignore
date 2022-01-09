@@ -1,1 +1,6 @@
+# Ignorer
 /node_modules
+/images/* 
+
+# Exceptions
+!images/.gitkeep
