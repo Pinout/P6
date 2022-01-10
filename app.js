@@ -9,12 +9,14 @@ const path = require('path');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require("helmet");
 
+require('dotenv').config();
+
 const app = express();
 
 app.set('view engine', 'html');
 
 // Connexion mongoose
-mongoose.connect(`mongodb+srv://Yann:yann@cluster0.ayvcw.mongodb.net/Cluster0?retryWrites=true&w=majority`,
+mongoose.connect('mongodb+srv://' + process.env.USER + ':' + process.env.PASS + '@cluster0.ayvcw.mongodb.net/Cluster0?retryWrites=true&w=majority',
     { useNewUrlParser: true,
      useUnifiedTopology: true 
     })
